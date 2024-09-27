@@ -1,10 +1,19 @@
 package com.springboot.restaurant_application.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.springboot.restaurant_application.enums.UserRole;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -20,10 +29,29 @@ public class User {
 	private String password;
 	@Column(name="full_name")
 	private String fullName;
-	@Column(name="phone_no")
-	private String phoneNo;
+
+	@OneToOne(mappedBy = "user", cascade = {CascadeType.
+			DETACH
+			,
+			CascadeType.
+			MERGE
+			,
+			CascadeType.
+			PERSIST
+			,
+			CascadeType.
+			REFRESH
+			})
+    private Cart cart;
 	public int getUserId() {
 		return userId;
+	}
+	@JsonIgnore
+	public Cart getCart() {
+		return cart;
+	}
+	public void setCart(Cart cart) {
+		this.cart = cart;
 	}
 	public void setUserId(int userId) {
 		this.userId = userId;
@@ -46,36 +74,14 @@ public class User {
 	public void setFullName(String fullName) {
 		this.fullName = fullName;
 	}
-	public String getPhoneNo() {
-		return phoneNo;
+	public UserRole getAccountType() {
+		return accountType;
 	}
-	public void setPhoneNo(String phoneNo) {
-		this.phoneNo = phoneNo;
+	public void setAccountType(UserRole accountType) {
+		this.accountType = accountType;
 	}
-	public User(int userId, String email, String password, String fullName, String phoneNo) {
-		super();
-		this.userId = userId;
-		this.email = email;
-		this.password = password;
-		this.fullName = fullName;
-		this.phoneNo = phoneNo;
-	}
-
-	public User(String email, String password, String fullName, String phoneNo) {
-		super();
-		this.email = email;
-		this.password = password;
-		this.fullName = fullName;
-		this.phoneNo = phoneNo;
-	}
-	public User() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-	@Override
-	public String toString() {
-		return "User [userId=" + userId + ", email=" + email + ", password=" + password + ", fullName=" + fullName
-				+ ", phoneNo=" + phoneNo + "]";
-	}
+	@Column(name="account_type")
+	private UserRole accountType;
+	
 	
 }

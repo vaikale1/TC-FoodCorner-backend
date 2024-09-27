@@ -28,9 +28,10 @@ public class FoodItemServiceImpl implements FoodItemService {
 		addItem.setCategory(foodItem.getCategory());
 		addItem.setDescription(foodItem.getDescription());
 		addItem.setPrice(foodItem.getPrice());
-		
-			FoodItem getFoodItem=findByItemName(foodItem.getItemName());
-			if(getFoodItem!=null) {
+		 String lowerCaseItemName = foodItem.getItemName().toLowerCase();
+
+		 FoodItem existingFoodItem = foodItemRepository.findByItemNameIgnoreCase(lowerCaseItemName);
+			if(existingFoodItem!=null) {
 				throw new BadRequestException("fooditem is Already Present");
 			}
 			FoodItem foodItem2=foodItemRepository.save(addItem);
@@ -38,11 +39,6 @@ public class FoodItemServiceImpl implements FoodItemService {
 			
 		}
 	
-		/*
-		 * if(foodItem) if(foodItem.getItemName().equals(addItem)) { throw new
-		 * BadRequestException(); }
-		 */
-		
 	
 
 	@Override
@@ -84,15 +80,12 @@ public class FoodItemServiceImpl implements FoodItemService {
 		if(foodItem.getCategory()!=null) {
 			oldFoodItem.setCategory(foodItem.getCategory());
 		}
-		/*
-		 * FoodItem getFoodItem=findByItemName(foodItem.getItemName());
-		 */		/*
-		 * if(getFoodItem!=null) { throw new
-		 * BadRequestException("fooditem is Already Present"); }
-		 */
+		
 		if (isNameUpdated) {
-	        FoodItem existingItemWithNewName = findByItemName(foodItem.getItemName());
-	        if (existingItemWithNewName != null) {
+			 String lowerCaseItemName = foodItem.getItemName().toLowerCase();
+
+			 FoodItem existingFoodItem = foodItemRepository.findByItemNameIgnoreCase(lowerCaseItemName);
+	        if (existingFoodItem != null) {
 	            throw new BadRequestException("Food item with the name '" + foodItem.getItemName() + "' already exists.");
 	        }
 	    }
@@ -124,15 +117,14 @@ public class FoodItemServiceImpl implements FoodItemService {
 		}
 				
 	}
-	/*
-	 * @Override public List<FoodItem> getFoodItemsByCategory(String category) {
-	 * return foodItemRepository.findByCategoryOrderByName(category); }
-	 */
+	
 
 	@Override
 	public List<FoodItem> getFoodItemsByCategory(String category) {
 	        return foodItemRepository.findByCategory(category);
 	}
+	
+	
 	
 	
 }

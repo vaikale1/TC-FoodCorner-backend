@@ -16,8 +16,5 @@ public interface FoodItemService {
 	public List<FoodItem> findAllFoodItems();
 	public FoodItem findByItemName(String itemName);
 	public List<FoodItem> getFoodItemsByCategory(String category);
-	/*
-	 * public List<FoodItem> getFoodItemsByCategory(String category)throws
-	 * NoSuchElementException;
-	 */
+	
 }
